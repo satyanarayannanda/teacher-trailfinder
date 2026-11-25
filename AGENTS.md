@@ -28,3 +28,9 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Application structure
+- Keep timetable status calculation in one pure shared service, used by server reads and live/demo UI; this prevents differing availability rules.
+- Store faculty and schedules in Cloud tables with public reads and role-restricted writes; the student directory must work without sign-in.
+- Keep protected management pages under the client-only authenticated layout; browser sessions are unavailable during server rendering.
+- Use Asia/Kolkata as the campus timezone for live timetable comparison; UTC and device timezone differences must not change the college day.

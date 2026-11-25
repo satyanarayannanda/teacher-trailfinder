@@ -1,0 +1,11 @@
+import a0 from '@/assets/faculty-portrait-0.webp.asset.json';
+import a1 from '@/assets/faculty-portrait-1.webp.asset.json';
+import a2 from '@/assets/faculty-portrait-2.webp.asset.json';
+import a3 from '@/assets/faculty-portrait-3.webp.asset.json';
+import a4 from '@/assets/faculty-portrait-4.webp.asset.json';
+import a5 from '@/assets/faculty-portrait-5.webp.asset.json';
+import a6 from '@/assets/faculty-portrait-6.webp.asset.json';
+import a7 from '@/assets/faculty-portrait-7.webp.asset.json';
+import a8 from '@/assets/faculty-portrait-8.webp.asset.json';
+import a9 from '@/assets/faculty-portrait-9.webp.asset.json';
+export const portraits = [a0,a1,a2,a3,a4,a5,a6,a7,a8,a9].map(a=>a.url);

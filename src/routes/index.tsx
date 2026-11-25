@@ -1,23 +1,16 @@
-import { createFileRoute } from "@tanstack/react-router";
-
-// The home route ships no og:image, so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
-  component: Index,
-});
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { UsersRound, CircleCheck, Clock3, Search, MapPin, LayoutGrid, List, ArrowRight, GraduationCap } from 'lucide-react';
+import { directoryOptions } from '@/lib/directory';
+import { calculateStatus } from '@/lib/status';
+import { ClockPanel, TeacherCard, useClock, WeeklyTable } from '@/components/college';
+import { Button } from '@/components/ui/button';
+export const Route = createFileRoute('/')({ head:()=>({meta:[{title:'Teacher Finder · Find your faculty'},{name:'description',content:'Find college teachers, current availability, classroom locations and weekly timetables.'},{property:'og:title',content:'Teacher Finder · Your campus, connected'},{property:'og:description',content:'Find your teacher using live timetable-based availability.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}]}), loader:({context})=>context.queryClient.ensureQueryData(directoryOptions), component:Index });
 function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+ const {data}=useSuspenseQuery(directoryOptions);const clock=useClock(); const [search,setSearch]=useState('');const [department,setDepartment]=useState('all');const [status,setStatus]=useState('all');const [layout,setLayout]=useState('grid');
+ const teachers=data.teachers.map(t=>({...t,current:calculateStatus(t,data.schedules.filter(s=>s.teacher_id===t.id),clock.day,clock.time)}));
+ const filtered=teachers.filter(t=>t.name.toLowerCase().includes(search.toLowerCase())&&(department==='all'||t.department_id===department)&&(status==='all'||t.current.status===status));
+ const stats=[{label:'Total teachers',count:teachers.length,icon:UsersRound,tone:''},{label:'Available now',count:teachers.filter(t=>t.current.status==='Available').length,icon:CircleCheck,tone:'available'},{label:'Currently busy',count:teachers.filter(t=>t.current.status==='Busy').length,icon:Clock3,tone:'busy'},{label:'On search',count:teachers.filter(t=>t.current.status==='On Search').length,icon:MapPin,tone:'searching'}];
+ return <main className="page-width"><section className="intro"><div><div className="eyebrow"><GraduationCap size={15}/> THE CAMPUS DIRECTORY</div><h1>Find your teacher.</h1><p>The right person, at the right place, at the right time.</p></div><ClockPanel/></section><section className="stats-grid" aria-label="Faculty availability statistics">{stats.map(s=><div className="stat" key={s.label}><div><small>{s.label}</small><strong>{s.count.toString().padStart(2,'0')}</strong></div><span className={`stat-icon ${s.tone}`}><s.icon size={22}/></span></div>)}</section><section><div className="directory-heading"><h2>Faculty directory <span className="count-bubble">{teachers.length}</span></h2><p><span className="live-dot"/>{clock.demo?'Demo time active':'Updated from timetable'}</p></div><div className="filter-row"><div className="search-input"><Search/><input aria-label="Search teachers" placeholder="Search by teacher name…" value={search} onChange={e=>setSearch(e.target.value)}/></div><select aria-label="Filter by department" value={department} onChange={e=>setDepartment(e.target.value)}><option value="all">All departments</option>{data.departments.map(d=><option key={d.id} value={d.id}>{d.id} · {d.name}</option>)}</select><select aria-label="Filter by status" value={status} onChange={e=>setStatus(e.target.value)}><option value="all">All statuses</option>{['Available','Busy','On Search'].map(s=><option key={s}>{s}</option>)}</select><div className="view-switch"><Button variant={layout==='grid'?'secondary':'ghost'} size="icon" aria-label="Grid view" onClick={()=>setLayout('grid')}><LayoutGrid/></Button><Button variant={layout==='list'?'secondary':'ghost'} size="icon" aria-label="List view" onClick={()=>setLayout('list')}><List/></Button></div></div><div className="result-line"><span>Showing <b>{filtered.length}</b> of {teachers.length} teachers</span><span>Sorted by name</span></div><div className={`teacher-grid ${layout}`}>{filtered.map(t=><TeacherCard key={t.id} teacher={t} schedules={data.schedules.filter(s=>s.teacher_id===t.id)} department={data.departments.find(d=>d.id===t.department_id)?.name??t.department_id}/>)}</div>{filtered.length===0&&<div className="empty-state"><Search/><h3>No teachers found</h3><p>Try another name or department.</p><Button variant="link" onClick={()=>{setSearch('');setDepartment('all');setStatus('all');}}>Clear filters</Button></div>}</section><section className="weekly-preview"><header><h2 className="section-title">Around campus this week</h2><Button variant="ghost" asChild><Link to="/timetable">Full timetable<ArrowRight/></Link></Button></header><WeeklyTable schedules={data.schedules} teachers={data.teachers}/></section></main>;
 }
