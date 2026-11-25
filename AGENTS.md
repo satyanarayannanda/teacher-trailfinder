@@ -34,3 +34,6 @@ use the editor.
 - Store faculty and schedules in Cloud tables with public reads and role-restricted writes; the student directory must work without sign-in.
 - Keep protected management pages under the client-only authenticated layout; browser sessions are unavailable during server rendering.
 - Use Asia/Kolkata as the campus timezone for live timetable comparison; UTC and device timezone differences must not change the college day.
+- Use teachers and timetable as the canonical faculty/schedule store; the retired schedule_entries table is historical only, preventing split read/write paths.
+- Convert database weekday names to numeric UI days through timetable-data and back on writes; this preserves the shared status service and existing presentation.
+- Synchronize teachers.department with the compatibility department code using database triggers; direct database writes and existing department filters must agree.
