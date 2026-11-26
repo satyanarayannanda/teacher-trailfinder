@@ -15,6 +15,20 @@
       "when": 1795633903923,
       "tag": "0001_teacher_finder_requested_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795674162288,
+      "tag": "0002_centralize_admin_gmail_approval",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1795674277113,
+      "tag": "0003_restrict_admin_approval_configuration",
+      "breakpoints": true
     }
   ]
 }

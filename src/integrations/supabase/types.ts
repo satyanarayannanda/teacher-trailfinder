@@ -14,6 +14,18 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_email_allowlist: {
+        Row: {
+          email: string
+        }
+        Insert: {
+          email: string
+        }
+        Update: {
+          email?: string
+        }
+        Relationships: []
+      }
       departments: {
         Row: {
           id: string
