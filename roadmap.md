@@ -1,6 +1,6 @@
 # Teacher Finder
-- [ ] Centralize approved Gmail admin access and enforce verified-email authorization
-- [ ] Remove Lovable only from signup and verify existing authentication and directory
+- [x] Centralize approved Gmail admin access and enforce verified-email authorization
+- [x] Remove Lovable only from signup and verify existing authentication and directory
 - [x] Persistent departments, teachers, weekly schedules and restricted admin roles
 - [x] Live status engine and presentation demo controls
 - [x] Student directory, teacher details and weekly timetable
