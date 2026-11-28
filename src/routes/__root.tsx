@@ -14,7 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CollegeShell } from '@/components/college';
 import { supabase } from '@/integrations/supabase/client';
-import { Toaster } from 'sonner';
+import { ThemeProvider, ThemedToaster } from '@/components/theme';
 
 function NotFoundComponent() {
   return (
@@ -130,8 +130,10 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <CollegeShell><Outlet /></CollegeShell>
-      <Toaster />
+      <ThemeProvider>
+        <CollegeShell><Outlet /></CollegeShell>
+        <ThemedToaster />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

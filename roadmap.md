@@ -1,4 +1,5 @@
 # Teacher Finder
+- [x] Add a persistent light/dark switch across the existing app
 - [x] Centralize approved Gmail admin access and enforce verified-email authorization
 - [x] Remove Lovable only from signup and verify existing authentication and directory
 - [x] Persistent departments, teachers, weekly schedules and restricted admin roles

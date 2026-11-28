@@ -30,6 +30,7 @@ use the editor.
 <!-- LOVABLE:END -->
 
 ## Application structure
+- Keep appearance in the shared ThemeProvider and semantic CSS tokens; theme storage is only a display preference and never an authorization or data source.
 - Keep admin Gmail approvals in the service-managed admin_email_allowlist table and require both a verified matching Auth email and a stored admin role in has_role; database policies and dashboard checks must share this decision so browser state cannot grant access.
 - Keep timetable status calculation in one pure shared service, used by server reads and live/demo UI; this prevents differing availability rules.
 - Store faculty and schedules in Cloud tables with public reads and role-restricted writes; the student directory must work without sign-in.
